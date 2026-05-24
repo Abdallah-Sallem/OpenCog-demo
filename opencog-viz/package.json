@@ -1,0 +1,14 @@
+{
+  "name": "opencog-viz",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n server,client -c cyan,magenta \"cd server && npm run dev\" \"cd client && npm run dev\"",
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "install:all": "cd server && npm install && cd ../client && npm install",
+    "test": "cd server && npm test"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
