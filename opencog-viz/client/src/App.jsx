@@ -4,6 +4,7 @@ import AtomSpaceGraph from './components/AtomSpaceGraph';
 import PLNConsole from './components/PLNConsole';
 import ECANDashboard from './components/ECANDashboard';
 import NodeInspector from './components/NodeInspector';
+import DemoNarrator from './components/DemoNarrator';
 
 export default function App() {
   const {
@@ -19,18 +20,28 @@ export default function App() {
   } = useSocket();
 
   const [selectedNode, setSelectedNode] = useState(null);
+  const [highlightedNodes, setHighlightedNodes] = useState([]);
+  const [highlightedLinks, setHighlightedLinks] = useState([]);
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
       {/* ── Header ──────────────────────────────────────────────── */}
       <header className="flex-none h-12 flex items-center justify-between px-5 border-b border-white/5"
               style={{ background: 'rgba(6,6,15,0.9)' }}>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <div className="text-lg font-bold tracking-tight">
             <span className="text-neon-cyan">Open</span>
             <span className="text-gray-200">Cog</span>
             <span className="text-neon-purple ml-1.5 text-sm font-medium">Synergy Viz</span>
           </div>
+          
+          <DemoNarrator
+            socketActions={{ updateParams: updateEcanParams, globalStimulus }}
+            onHighlightChange={(nodes, links) => {
+              setHighlightedNodes(nodes);
+              setHighlightedLinks(links);
+            }}
+          />
         </div>
         <div className="flex items-center gap-4 text-xs font-mono">
           <div className="flex items-center gap-2 text-gray-500">
@@ -73,6 +84,8 @@ export default function App() {
             graphData={graphData}
             onNodeSelect={(node) => setSelectedNode(node)}
             selectedNodeId={selectedNode?.id}
+            highlightedNodeIds={highlightedNodes}
+            highlightedLinks={highlightedLinks}
           />
           {/* Node Inspector overlay */}
           <NodeInspector
